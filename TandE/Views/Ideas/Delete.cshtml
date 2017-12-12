@@ -1,0 +1,51 @@
+﻿@model TandE.Models.Idea
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Idea</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IdeaName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdeaName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RefURL1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RefURL1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InitialNotes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.InitialNotes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category.CategoryID)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdeaID" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
