@@ -13,7 +13,7 @@ namespace TandE.Models
         teaspoon, tablespoon, fluid_ounce, cup, quart, gallon, milliliter, liter, pound, ounce, milligram, gram, kilogram, inch, centimeter
     }
 
-    public class RecipeIngredient
+    public class RecipeIngredient : BaseEntity
     {
         public int RecipeIngredientID { get; set; }
         public int RecipeID { get; set; }

@@ -46,9 +46,9 @@ namespace TandE.Controllers
         }
 
         // GET: Recipes/Create
-        public IActionResult Create(int? ideaId)
+        public IActionResult Create()
         {
-            ViewData["IdeaID"] = ideaId;
+            ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID");
             return View();
         }
 
@@ -66,6 +66,7 @@ namespace TandE.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID", recipe.IdeaID);
+
             return View(recipe);
         }
 

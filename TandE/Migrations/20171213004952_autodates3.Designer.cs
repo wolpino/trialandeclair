@@ -12,9 +12,10 @@ using TandE.Models;
 namespace TandE.Migrations
 {
     [DbContext(typeof(TrialEclairContext))]
-    partial class TrialEclairContextModelSnapshot : ModelSnapshot
+    [Migration("20171213004952_autodates3")]
+    partial class autodates3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,7 +90,7 @@ namespace TandE.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<int>("IdeaID");
 

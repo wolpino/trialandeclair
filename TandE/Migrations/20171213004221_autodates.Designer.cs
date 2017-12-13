@@ -12,9 +12,10 @@ using TandE.Models;
 namespace TandE.Migrations
 {
     [DbContext(typeof(TrialEclairContext))]
-    partial class TrialEclairContextModelSnapshot : ModelSnapshot
+    [Migration("20171213004221_autodates")]
+    partial class autodates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +31,10 @@ namespace TandE.Migrations
 
                     b.Property<string>("CategoryName");
 
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateModified");
+
                     b.HasKey("CategoryID");
 
                     b.ToTable("Category");
@@ -44,6 +49,10 @@ namespace TandE.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateModified");
 
                     b.Property<string>("IdeaName");
 
@@ -64,6 +73,10 @@ namespace TandE.Migrations
 
                     b.Property<int>("SubCategoryID");
 
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateModified");
+
                     b.HasKey("IdeaID", "SubCategoryID");
 
                     b.HasIndex("SubCategoryID");
@@ -75,6 +88,10 @@ namespace TandE.Migrations
                 {
                     b.Property<int>("IngredientId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateModified");
 
                     b.Property<string>("IngredientName");
 
@@ -89,7 +106,11 @@ namespace TandE.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateModified");
 
                     b.Property<int>("IdeaID");
 
@@ -118,6 +139,10 @@ namespace TandE.Migrations
                     b.Property<int>("RecipeIngredientID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateModified");
+
                     b.Property<int>("IngredientID");
 
                     b.Property<int>("Measurement");
@@ -139,6 +164,10 @@ namespace TandE.Migrations
                 {
                     b.Property<int>("SubCategoryID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateModified");
 
                     b.Property<string>("SubCategoryDesc");
 

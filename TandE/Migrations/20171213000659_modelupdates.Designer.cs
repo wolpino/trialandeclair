@@ -12,9 +12,10 @@ using TandE.Models;
 namespace TandE.Migrations
 {
     [DbContext(typeof(TrialEclairContext))]
-    partial class TrialEclairContextModelSnapshot : ModelSnapshot
+    [Migration("20171213000659_modelupdates")]
+    partial class modelupdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +44,7 @@ namespace TandE.Migrations
                     b.Property<int>("CategoryID");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("IdeaName");
 
@@ -89,7 +90,7 @@ namespace TandE.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<int>("IdeaID");
 

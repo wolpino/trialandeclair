@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TandE.Models
 {
-    public class Category
+    public class Category : BaseEntity
     {
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TandE.Data;
 using TandE.Models;
+using TandE.Models.TEViewModels;
 
 namespace TandE.Controllers
 {
@@ -48,7 +49,10 @@ namespace TandE.Controllers
         // GET: Ideas/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName");
+            var idea = new Idea();
+            idea.SubCategories = new List<IdeaSubCategory>();
+            PopulateSubCategoryData(idea);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryName", "CategoryName");
             return View();
         }
 
@@ -57,14 +61,23 @@ namespace TandE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdeaID,IdeaName,RefURL1,CategoryID,InitialNotes,CreatedAt")] Idea idea)
+        public async Task<IActionResult> Create([Bind("IdeaID,IdeaName,RefURL1,CategoryID,InitialNotes,CreatedAt")] Idea idea, string[] selectedSubCategories)
         {
-            if (ModelState.IsValid)
+            if (selectedSubCategories != null)
+            {
+                foreach (var subcategory in selectedSubCategories)
+                {
+                    var subToAdd = new IdeaSubCategory { IdeaID = idea.IdeaID, SubCategoryID = int.Parse(subcategory) };
+                    idea.SubCategories.Add(subToAdd);
+                }
+            }
+            if(ModelState.IsValid)
             {
                 _context.Add(idea);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            PopulateSubCategoryData(idea);
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", idea.CategoryID);
             return View(idea);
         }
@@ -77,13 +90,34 @@ namespace TandE.Controllers
                 return NotFound();
             }
 
-            var idea = await _context.Ideas.SingleOrDefaultAsync(m => m.IdeaID == id);
+            var idea = await _context.Ideas
+                .Include(i => i.SubCategories).ThenInclude(i => i.SubCategory)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.IdeaID == id);
             if (idea == null)
             {
                 return NotFound();
             }
+            PopulateSubCategoryData(idea);
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", idea.CategoryID);
             return View(idea);
+        }
+
+        private void PopulateSubCategoryData(Idea idea)
+        {
+            var allSubCategories = _context.Subcategories;
+            var ideaSubCategories = new HashSet<int>(idea.SubCategories.Select(s => s.SubCategoryID));
+            var viewModel = new List<SubCategoryData>();
+            foreach(var subcategory in allSubCategories)
+            {
+                viewModel.Add(new SubCategoryData
+                {
+                    SubCategoryID = subcategory.SubCategoryID,
+                    SubCategoryName = subcategory.SubCategoryName,
+                    Assigned = ideaSubCategories.Contains(subcategory.SubCategoryID)
+                });
+            }
+            ViewData["SubCategories"] = viewModel;
         }
 
         // POST: Ideas/Edit/5
@@ -91,35 +125,75 @@ namespace TandE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdeaID,IdeaName,RefURL1,CategoryID,InitialNotes,CreatedAt")] Idea idea)
+        public async Task<IActionResult> Edit(int? id, string[] selectedSubCategories)
         {
-            if (id != idea.IdeaID)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var ideaToUpdate = await _context.Ideas
+                        .Include(i => i.SubCategories)
+                            .ThenInclude(i => i.SubCategory)
+                        .SingleOrDefaultAsync(m => m.IdeaID == id);
+            
+            if(await TryUpdateModelAsync<Idea>(
+                ideaToUpdate,
+                "",
+                i => i.IdeaName, i => i.RefURL1, i => i.CategoryID, i => i.InitialNotes))
             {
-                try
-                {
-                    _context.Update(idea);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!IdeaExists(idea.IdeaID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+            UpdateIdeaSubCategories(selectedSubCategories, ideaToUpdate);
+            try
+            {
+                await _context.SaveChangesAsync();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", idea.CategoryID);
-            return View(idea);
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, " +
+                    "see your system administrator.");
+            }
+            return RedirectToAction(nameof(Index));
+        }
+            UpdateIdeaSubCategories(selectedSubCategories, ideaToUpdate);
+            PopulateSubCategoryData(ideaToUpdate);
+        return View(ideaToUpdate);
+        }
+
+        private void UpdateIdeaSubCategories(string[] selectedSubCategories, Idea ideaToUpdate)
+        {
+            if(selectedSubCategories == null)
+            {
+                ideaToUpdate.SubCategories = new List<IdeaSubCategory>();
+                return;
+            }
+
+            var selectedSubCategoriesHS = new HashSet<string>(selectedSubCategories);
+            var ideaSubCategories = new HashSet<int>
+                (ideaToUpdate.SubCategories.Select(s => s.SubCategory.SubCategoryID));
+            foreach (var subcategory in _context.Subcategories)
+            {
+                if (selectedSubCategoriesHS.Contains(subcategory.SubCategoryID.ToString()))
+                {
+                    if (!ideaSubCategories.Contains(subcategory.SubCategoryID))
+                    {
+                        ideaToUpdate.SubCategories.Add(new IdeaSubCategory { IdeaID = ideaToUpdate.IdeaID, SubCategoryID = subcategory.SubCategoryID });
+                    }
+                }
+                else
+                {
+                    if (ideaSubCategories.Contains(subcategory.SubCategoryID))
+                    {
+                        IdeaSubCategory subToRemove = ideaToUpdate.SubCategories.SingleOrDefault(s => s.SubCategoryID == subcategory.SubCategoryID);
+                        _context.Remove(subToRemove);
+                    }
+
+                }
+
+
+            }
         }
 
         // GET: Ideas/Delete/5
@@ -146,7 +220,10 @@ namespace TandE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var idea = await _context.Ideas.SingleOrDefaultAsync(m => m.IdeaID == id);
+            Idea idea = await _context.Ideas
+                .Include(i =>i.SubCategories)
+                .SingleAsync(m => m.IdeaID == id);
+
             _context.Ideas.Remove(idea);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

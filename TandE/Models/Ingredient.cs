@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TandE.Models
 {
-    public class Ingredient
+    public class Ingredient : BaseEntity
     {
         public int IngredientId { get; set; }
         public string IngredientName { get; set; }

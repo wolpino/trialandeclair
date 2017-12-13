@@ -12,9 +12,10 @@ using TandE.Models;
 namespace TandE.Migrations
 {
     [DbContext(typeof(TrialEclairContext))]
-    partial class TrialEclairContextModelSnapshot : ModelSnapshot
+    [Migration("20171213005442_autodates4")]
+    partial class autodates4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
