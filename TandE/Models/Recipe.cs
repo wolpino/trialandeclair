@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace TandE.Models
 {
-    public class Recipe
+    public class Recipe : BaseEntity
     {
         public int RecipeId { get; set; }
+        [Required]
         public string RecipeName { get; set; }
         public string RefURL2 { get; set; }
         public string RefURL3 { get; set; }
@@ -17,8 +18,8 @@ namespace TandE.Models
         public string VersionNotes { get; set; }
         public int IdeaID { get; set; }
         public string Method { get; set; }
-        //[Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime CreatedAt { get; set; }
+        [Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         //Nullable but needs to fill when next is created
         //public DateTime RevisedAt { get; set; }
 

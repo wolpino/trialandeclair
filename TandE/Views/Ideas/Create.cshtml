@@ -31,10 +31,32 @@
                 <input asp-for="InitialNotes" class="form-control" />
                 <span asp-validation-for="InitialNotes" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<TandE.Models.TEViewModels.SubCategoryData> subcategories = ViewBag.SubCategories;
+
+                                foreach (var subcategory in subcategories)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                        @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <input type="checkbox"
+                                               name="selectedSubCategories"
+                                               value="@subcategory.SubCategoryID"
+                                               @(Html.Raw(subcategory.Assigned ? "checked=\"checked\"" : "")) />
+                                               @subcategory.SubCategoryID @:  @subcategory.SubCategoryName
+                                        @:</td>
+                                }
+                                @:</tr>
+                            }
+                    </table>
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

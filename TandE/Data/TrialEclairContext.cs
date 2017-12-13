@@ -31,5 +31,6 @@ namespace TandE.Data
             modelBuilder.Entity<IdeaSubCategory>()
                 .HasKey(c => new { c.IdeaID, c.SubCategoryID });
         }
+
     }
 }
