@@ -44,7 +44,8 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.IdeaID">Edit</a> |
-    <a asp-controller="Recipes" asp-action="Create" asp-route-id="@Model.IdeaID">Make into Recipe</a> |
-
-    <a asp-action="Index">Back to List</a>
+    <form asp-controller="Recipes" asp-action="CreateFromIdea" asp-route-id="@Model.IdeaID">
+        <input type="submit" value="Make into Recipe" class="btn btn-default" />
+    </form>
+<a asp-action="Index">Back to List</a>
 </div>

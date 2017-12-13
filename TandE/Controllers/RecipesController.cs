@@ -69,6 +69,80 @@ namespace TandE.Controllers
 
             return View(recipe);
         }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFromIdea(int? id)
+        {
+            var idea = await _context.Ideas.SingleOrDefaultAsync(m => m.IdeaID == id);
+ 
+            if (ModelState.IsValid)
+            {
+                Recipe recipe = new Recipe
+                {
+                    RecipeName = idea.IdeaName,
+                    IdeaID = idea.IdeaID,
+                    RefURL2 = "",
+                    RefURL3 = "",
+                    RefURL4 = "",
+                    VersionNotes = ""
+                };
+                Recipe newR = _context.Add(recipe).Entity;
+                await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("CreateRecipe", "Recipes", new { id = newR.RecipeId });
+            }
+            return RedirectToAction("Index", "Ideas");
+        }
+
+
+        public async Task<IActionResult> CreateRecipe(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var recipe = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeId == id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+            ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID", recipe.IdeaID);
+            return View(recipe);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateRecipe(int id, [Bind("RecipeId,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method,CreatedAt")] Recipe recipe)
+        {
+            if (id != recipe.RecipeId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(recipe);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RecipeExists(recipe.RecipeId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("CreateRecipe", "Recipes", new { id = id });
+            }
+            return View(recipe);
+        }
+
 
         // GET: Recipes/Edit/5
         public async Task<IActionResult> Edit(int? id)
