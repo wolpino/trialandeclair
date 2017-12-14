@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TandE.Data;
 using TandE.Models;
+using TandE.Models.TEViewModels;
 
 namespace TandE.Controllers
 {
@@ -108,8 +109,9 @@ namespace TandE.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID", recipe.IdeaID);
-            return View(recipe);
+            RecipeViewModel newrecipe = new RecipeViewModel(recipe);
+            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientId", "IngredientName");
+            return View(newrecipe);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -140,8 +142,44 @@ namespace TandE.Controllers
                 }
                 return RedirectToAction("CreateRecipe", "Recipes", new { id = id });
             }
-            return View(recipe);
+            RecipeViewModel newrecipe = new RecipeViewModel(recipe);
+
+            return View(newrecipe);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddIngredient(RecipeIngredient recipe)
+        {
+            if (ModelState.IsValid)
+            {
+                RecipeIngredient recipeIngredient = new RecipeIngredient
+                {
+                    RecipeID = recipe.Recipe.RecipeId,
+                    IngredientID = recipe.IngredientID,
+                    Measurement = recipe.Measurement,
+                    Unit = recipe.Unit
+                };
+                _context.Add(recipeIngredient);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("CreateRecipe", "Recipes", new { id = recipeIngredient.RecipeID });
+            }
+            return RedirectToAction("CreateRecipe", "Recipes", new { id = recipe.Recipe.RecipeId });
+        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddIngredient([Bind("RecipeIngredientID,RecipeID,IngredientID,Measurement,Unit")] RecipeIngredient recipeIngredient)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(recipeIngredient);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientId", "IngredientId", recipeIngredient.IngredientID);
+        //    ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", recipeIngredient.RecipeID);
+        //    return View(recipeIngredient);
+        //}
 
 
         // GET: Recipes/Edit/5
