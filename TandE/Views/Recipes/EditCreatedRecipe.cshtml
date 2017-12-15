@@ -1,17 +1,18 @@
 ﻿@model TandE.Models.TEViewModels.RecipeViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "EditCreatedRecipe";
 }
 
-<h2>Create</h2>
+<h2>Edit Created Recipe</h2>
 
 <h4>Recipe</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="EditCreatedRecipe">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Recipe.RecipeID" />
             <div class="form-group">
                 <label asp-for="Recipe.RecipeName" class="control-label"></label>
                 <input asp-for="Recipe.RecipeName" class="form-control" />
@@ -37,21 +38,53 @@
                 <input asp-for="Recipe.VersionNotes" class="form-control" />
                 <span asp-validation-for="Recipe.VersionNotes" class="text-danger"></span>
             </div>
-
+            <input type="hidden" asp-for="Recipe.IdeaID" />
             <div class="form-group">
-                <label asp-for="Recipe.IdeaID" class="control-label"></label>
-                <select asp-for="Recipe.IdeaID" class="form-control" asp-items="ViewBag.IdeaID"></select>
-            </div>            <div class="form-group">
                 <label asp-for="Recipe.Method" class="control-label"></label>
                 <input asp-for="Recipe.Method" class="form-control" />
                 <span asp-validation-for="Recipe.Method" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Update" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
+<h5>Ingredients:</h5>
+@foreach (var ingred in Model.CurrentRecipeIngredients)
+{
+    <p>@ingred.Measurement @ingred.Unit -  @ingred.Ingredient.IngredientName (Remove, Edit)</p>
+}
+
+<hr />
+<h5>Add Ingredient</h5>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddIng" asp-controller="RecipeIngredients">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="RecipeIngredient.RecipeID" type="hidden" value=@Model.Recipe.RecipeID />
+
+            <div class="form-group">
+                <label asp-for="RecipeIngredient.IngredientID" class="control-label"></label>
+                <select asp-for="RecipeIngredient.IngredientID" class="form-control" asp-items="Model.ListOfIngredients"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecipeIngredient.Measurement" class="control-label"></label>
+                <input asp-for="RecipeIngredient.Measurement" class="form-control" />
+                <span asp-validation-for="RecipeIngredient.Measurement" class="text-danger"></span>
+            </div>
+            @Html.DropDownListFor(m => m.RecipeIngredient.Unit, new SelectList(Enum.GetValues(typeof(Unit))), "Choose Unit")
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
 
 <div>
     <a asp-action="Index">Back to List</a>

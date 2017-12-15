@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TandE.Data;
 using TandE.Models;
+using TandE.Models.TEViewModels;
 
 namespace TandE.Controllers
 {
@@ -36,7 +37,14 @@ namespace TandE.Controllers
 
             var recipe = await _context.Recipes
                 .Include(r => r.Idea)
-                .SingleOrDefaultAsync(m => m.RecipeId == id);
+                .Include(r => r.Ingredients)
+                .SingleOrDefaultAsync(m => m.RecipeID == id);
+
+            recipe.Ingredients = _context
+                                 .RecipeIngredients
+                                 .Include(r => r.Ingredient)
+                                 .Where(item => recipe.RecipeID == item.RecipeID)
+                                 .ToList();
             if (recipe == null)
             {
                 return NotFound();
@@ -45,7 +53,6 @@ namespace TandE.Controllers
             return View(recipe);
         }
 
-        // GET: Recipes/Create
         public IActionResult Create()
         {
             ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID");
@@ -57,7 +64,7 @@ namespace TandE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method,CreatedAt")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("RecipeID,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method")] Recipe recipe)
         {
             if (ModelState.IsValid)
             {
@@ -67,10 +74,115 @@ namespace TandE.Controllers
             }
             ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID", recipe.IdeaID);
 
-            return View(recipe);
+            return RedirectToAction("RecipeCreatePage", "TE", recipe);
+            
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFromIdea(int? id)
+        {
+            var idea = await _context.Ideas.SingleOrDefaultAsync(m => m.IdeaID == id);
+ 
+            if (ModelState.IsValid)
+            {
+                Recipe recipe = new Recipe
+                {
+                    RecipeName = idea.IdeaName,
+                    IdeaID = idea.IdeaID,
+                    RefURL2 = "",
+                    RefURL3 = "",
+                    RefURL4 = "",
+                    VersionNotes = ""
+                };
+                Recipe newR = _context.Add(recipe).Entity;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = newR.RecipeID });
+            }
+            return RedirectToAction("Index", "Ideas");
         }
 
-        // GET: Recipes/Edit/5
+
+        public async Task<IActionResult> EditCreatedRecipe(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var recipe = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeID == id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+
+            RecipeViewModel newrecipe = new RecipeViewModel()
+            {
+                CurrentRecipeIngredients = _context
+                                            .RecipeIngredients
+                                            .Where(item => recipe.RecipeID == item.RecipeID)
+                                            .ToList()
+            };
+
+            newrecipe.ListOfIngredients = PopulateIngredients();
+            newrecipe.Recipe = recipe;
+            return View(newrecipe);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCreatedRecipe(int id, [Bind("RecipeID,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method,CreatedAt")] Recipe recipe)
+        {
+            if (id != recipe.RecipeID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(recipe);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RecipeExists(recipe.RecipeID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = id });
+            }
+            RecipeViewModel newrecipe = new RecipeViewModel();
+            newrecipe.Recipe = recipe;
+            newrecipe.ListOfIngredients = PopulateIngredients();
+            return View(newrecipe);
+        }
+
+        private List<SelectListItem> PopulateIngredients()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            var ingredients = _context.Ingredients.ToList();
+            foreach (var ingredient in ingredients)
+            {
+                items.Add(new SelectListItem
+                {
+                    Text = (ingredient.IngredientName).ToString(),
+                    Value = ingredient.IngredientID.ToString(),
+                    
+                });
+            }
+            return items;
+        }
+
+        //GET: Recipes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,7 +190,7 @@ namespace TandE.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeId == id);
+            var recipe = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeID == id);
             if (recipe == null)
             {
                 return NotFound();
@@ -94,7 +206,7 @@ namespace TandE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("RecipeId,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method,CreatedAt")] Recipe recipe)
         {
-            if (id != recipe.RecipeId)
+            if (id != recipe.RecipeID)
             {
                 return NotFound();
             }
@@ -108,7 +220,7 @@ namespace TandE.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeExists(recipe.RecipeId))
+                    if (!RecipeExists(recipe.RecipeID))
                     {
                         return NotFound();
                     }
@@ -133,7 +245,7 @@ namespace TandE.Controllers
 
             var recipe = await _context.Recipes
                 .Include(r => r.Idea)
-                .SingleOrDefaultAsync(m => m.RecipeId == id);
+                .SingleOrDefaultAsync(m => m.RecipeID == id);
             if (recipe == null)
             {
                 return NotFound();
@@ -147,7 +259,7 @@ namespace TandE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipe = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeId == id);
+            var recipe = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeID == id);
             _context.Recipes.Remove(recipe);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -155,7 +267,7 @@ namespace TandE.Controllers
 
         private bool RecipeExists(int id)
         {
-            return _context.Recipes.Any(e => e.RecipeId == id);
+            return _context.Recipes.Any(e => e.RecipeID == id);
         }
     }
 }

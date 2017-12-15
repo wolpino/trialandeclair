@@ -1,0 +1,22 @@
+﻿@using TandE.Models
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Recipe</h4>
+<hr />
+
+@Html.Partial("CreateRecipePartial")
+@Html.Partial("CreateRecipeIngredientPartial")
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

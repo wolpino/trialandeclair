@@ -4,12 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TandE.Models
 {
     public class Recipe : BaseEntity
     {
-        public int RecipeId { get; set; }
+        public Recipe()
+        {
+            Ingredients = new List<RecipeIngredient>();
+        }
+        public int RecipeID { get; set; }
         [Required]
         public string RecipeName { get; set; }
         public string RefURL2 { get; set; }
@@ -24,7 +29,7 @@ namespace TandE.Models
         //public DateTime RevisedAt { get; set; }
 
         public Idea Idea { get; set; }
-        public ICollection<RecipeIngredient> Ingredients { get; set; }
+        public List<RecipeIngredient> Ingredients { get; set; }
 
 
     }

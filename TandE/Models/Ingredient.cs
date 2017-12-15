@@ -8,7 +8,7 @@ namespace TandE.Models
 {
     public class Ingredient : BaseEntity
     {
-        public int IngredientId { get; set; }
+        public int IngredientID { get; set; }
         public string IngredientName { get; set; }
 
         public ICollection<RecipeIngredient> Recipes { get; set; }

@@ -314,4 +314,4 @@ OpenCover/
 # Azure Stream Analytics local run output 
 ASALocalRun/
 
-appsettings.*
+appsettings.json

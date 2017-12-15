@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TandE.Models.TEViewModels.RecipeViewModel>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.RecipeIngredient.Measurement)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RecipeIngredient.Unit)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeIngredient.Ingredient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeIngredient.Recipe)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipeIngredient.Measurement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipeIngredient.Unit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipeIngredient.Ingredient.IngredientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recipe.RecipeName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -5,6 +5,16 @@
     <UserSecretsId>aspnet-TandE-4AF1C787-DCF3-4290-8E58-038CBAA42A7A</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="Controllers\AccountController.cs" />
+    <Content Include="Controllers\HomeController.cs" />
+    <Content Include="Controllers\IdeasController.cs" />
+    <Content Include="Controllers\ManageController.cs" />
+    <Content Include="Controllers\RecipeIngredientsController.cs" />
+    <Content Include="Controllers\RecipesController.cs" />
+    <Content Include="Controllers\TEController.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
@@ -19,6 +29,10 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
