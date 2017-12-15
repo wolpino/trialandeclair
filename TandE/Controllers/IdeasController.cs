@@ -52,7 +52,7 @@ namespace TandE.Controllers
             var idea = new Idea();
             idea.SubCategories = new List<IdeaSubCategory>();
             PopulateSubCategoryData(idea);
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName");
             return View();
         }
 

@@ -9,7 +9,7 @@ namespace TandE.Models
 {
     public class Recipe : BaseEntity
     {
-        public int RecipeId { get; set; }
+        public int RecipeID { get; set; }
         [Required]
         public string RecipeName { get; set; }
         public string RefURL2 { get; set; }

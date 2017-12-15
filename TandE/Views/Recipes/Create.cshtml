@@ -1,4 +1,4 @@
-﻿@model TandE.Models.Recipe
+﻿@model TandE.Models.TEViewModels.RecipeViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,36 +13,38 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="RecipeName" class="control-label"></label>
-                <input asp-for="RecipeName" class="form-control" />
-                <span asp-validation-for="RecipeName" class="text-danger"></span>
+                <label asp-for="Recipe.RecipeName" class="control-label"></label>
+                <input asp-for="Recipe.RecipeName" class="form-control" />
+                <span asp-validation-for="Recipe.RecipeName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RefURL2" class="control-label"></label>
-                <input asp-for="RefURL2" class="form-control" />
-                <span asp-validation-for="RefURL2" class="text-danger"></span>
+                <label asp-for="Recipe.RefURL2" class="control-label"></label>
+                <input asp-for="Recipe.RefURL2" class="form-control" />
+                <span asp-validation-for="Recipe.RefURL2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RefURL3" class="control-label"></label>
-                <input asp-for="RefURL3" class="form-control" />
-                <span asp-validation-for="RefURL3" class="text-danger"></span>
+                <label asp-for="Recipe.RefURL3" class="control-label"></label>
+                <input asp-for="Recipe.RefURL3" class="form-control" />
+                <span asp-validation-for="Recipe.RefURL3" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RefURL4" class="control-label"></label>
-                <input asp-for="RefURL4" class="form-control" />
-                <span asp-validation-for="RefURL4" class="text-danger"></span>
+                <label asp-for="Recipe.RefURL4" class="control-label"></label>
+                <input asp-for="Recipe.RefURL4" class="form-control" />
+                <span asp-validation-for="Recipe.RefURL4" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VersionNotes" class="control-label"></label>
-                <input asp-for="VersionNotes" class="form-control" />
-                <span asp-validation-for="VersionNotes" class="text-danger"></span>
+                <label asp-for="Recipe.VersionNotes" class="control-label"></label>
+                <input asp-for="Recipe.VersionNotes" class="form-control" />
+                <span asp-validation-for="Recipe.VersionNotes" class="text-danger"></span>
             </div>
 
-            <input type="hidden" asp-for="IdeaID" value="ViewBag.linkID" />
             <div class="form-group">
-                <label asp-for="Method" class="control-label"></label>
-                <input asp-for="Method" class="form-control" />
-                <span asp-validation-for="Method" class="text-danger"></span>
+                <label asp-for="Recipe.IdeaID" class="control-label"></label>
+                <select asp-for="Recipe.IdeaID" class="form-control" asp-items="ViewBag.IdeaID"></select>
+            </div>            <div class="form-group">
+                <label asp-for="Recipe.Method" class="control-label"></label>
+                <input asp-for="Recipe.Method" class="form-control" />
+                <span asp-validation-for="Recipe.Method" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

@@ -49,8 +49,8 @@ namespace TandE.Controllers
         // GET: RecipeIngredients/Create
         public IActionResult Create()
         {
-            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientId", "IngredientId");
-            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName");
+            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "ID", "ID");
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace TandE.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeIngredientID,RecipeID,IngredientID,Measurement,Unit")] RecipeIngredient recipeIngredient)
+        public async Task<IActionResult> AddIng([Bind("RecipeIngredientID,RecipeID,IngredientID,Measurement,Unit")] RecipeIngredient recipeIngredient)
         {
             if (ModelState.IsValid)
             {
@@ -67,8 +67,8 @@ namespace TandE.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientId", "IngredientId", recipeIngredient.IngredientID);
-            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", recipeIngredient.RecipeID);
+            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientID", recipeIngredient.IngredientID);
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);
             return View(recipeIngredient);
         }
 
@@ -85,8 +85,8 @@ namespace TandE.Controllers
             {
                 return NotFound();
             }
-            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientId", "IngredientId", recipeIngredient.IngredientID);
-            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", recipeIngredient.RecipeID);
+            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientID", recipeIngredient.IngredientID);
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);
             return View(recipeIngredient);
         }
 
@@ -122,8 +122,8 @@ namespace TandE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientId", "IngredientId", recipeIngredient.IngredientID);
-            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", recipeIngredient.RecipeID);
+            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientID", recipeIngredient.IngredientID);
+            ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);
             return View(recipeIngredient);
         }
 
