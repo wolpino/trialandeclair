@@ -37,7 +37,14 @@ namespace TandE.Controllers
 
             var recipe = await _context.Recipes
                 .Include(r => r.Idea)
+                .Include(r => r.Ingredients)
                 .SingleOrDefaultAsync(m => m.RecipeID == id);
+
+            recipe.Ingredients = _context
+                                 .RecipeIngredients
+                                 .Include(r => r.Ingredient)
+                                 .Where(item => recipe.RecipeID == item.RecipeID)
+                                 .ToList();
             if (recipe == null)
             {
                 return NotFound();
@@ -46,7 +53,6 @@ namespace TandE.Controllers
             return View(recipe);
         }
 
-        // GET: Recipes/Create
         public IActionResult Create()
         {
             ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID");
@@ -91,13 +97,13 @@ namespace TandE.Controllers
                 };
                 Recipe newR = _context.Add(recipe).Entity;
                 await _context.SaveChangesAsync();
-                return RedirectToAction("CreateRecipe", "Recipes", new { id = newR.RecipeID });
+                return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = newR.RecipeID });
             }
             return RedirectToAction("Index", "Ideas");
         }
 
 
-        public async Task<IActionResult> CreateRecipe(int? id)
+        public async Task<IActionResult> EditCreatedRecipe(int? id)
         {
             if (id == null)
             {
@@ -109,19 +115,25 @@ namespace TandE.Controllers
             {
                 return NotFound();
             }
-            RecipeViewModel newrecipe = new RecipeViewModel();
-            newrecipe.IngredientIds = PopulateIngredients();
-            newrecipe.Recipe = recipe;
-            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientName");
-            ViewData["RecipeID"] = id;
 
+
+            RecipeViewModel newrecipe = new RecipeViewModel()
+            {
+                CurrentRecipeIngredients = _context
+                                            .RecipeIngredients
+                                            .Where(item => recipe.RecipeID == item.RecipeID)
+                                            .ToList()
+            };
+
+            newrecipe.ListOfIngredients = PopulateIngredients();
+            newrecipe.Recipe = recipe;
             return View(newrecipe);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateRecipe(int id, [Bind("RecipeID,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method,CreatedAt")] Recipe recipe)
+        public async Task<IActionResult> EditCreatedRecipe(int id, [Bind("RecipeID,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method,CreatedAt")] Recipe recipe)
         {
             if (id != recipe.RecipeID)
             {
@@ -146,11 +158,11 @@ namespace TandE.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("CreateRecipe", "Recipes", new { id = id });
+                return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = id });
             }
             RecipeViewModel newrecipe = new RecipeViewModel();
             newrecipe.Recipe = recipe;
-            newrecipe.IngredientIds = PopulateIngredients();
+            newrecipe.ListOfIngredients = PopulateIngredients();
             return View(newrecipe);
         }
 

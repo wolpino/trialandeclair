@@ -16,12 +16,16 @@
         <dd>
             @Html.DisplayFor(model => model.RecipeName)
         </dd>
+@if (Model.RefURL2 != null)
+{
         <dt>
             @Html.DisplayNameFor(model => model.RefURL2)
         </dt>
+
         <dd>
             @Html.DisplayFor(model => model.RefURL2)
         </dd>
+}
         <dt>
             @Html.DisplayNameFor(model => model.RefURL3)
         </dt>
@@ -47,17 +51,15 @@
             @Html.DisplayFor(model => model.Method)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(model => model.Ingredients)
         </dt>
+        @foreach (var ingred in Model.Ingredients)
+        {
         <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
+            <p>@ingred.Measurement @ingred.Unit  @ingred.Ingredient.IngredientName</p>
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Idea)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Idea.IdeaID)
-        </dd>
+        }
+
     </dl>
 </div>
 <div>

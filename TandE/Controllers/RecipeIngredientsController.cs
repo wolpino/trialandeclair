@@ -65,7 +65,7 @@ namespace TandE.Controllers
             {
                 _context.Add(recipeIngredient);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = recipeIngredient.RecipeID });
             }
             ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientID", recipeIngredient.IngredientID);
             ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);

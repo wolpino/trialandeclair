@@ -10,18 +10,18 @@ namespace TandE.Models.TEViewModels
 {
     public class RecipeViewModel
     {
-        //public RecipeViewModel(Recipe recipe)
-        //{
-        //    this.Recipe = recipe;
-        //}
+        public RecipeViewModel()
+        {
+            CurrentRecipeIngredients = new List<RecipeIngredient>();
+            ListOfIngredients = new List<SelectListItem>();
+        }
         public Recipe Recipe { get; set; }
 
-        //[HiddenInput]
-        //public Recipe RecipeID { get; set; }
         public RecipeIngredient RecipeIngredient { get; set; }
 
-        public int IngredientId { get; set; }
-        public List<SelectListItem> IngredientIds { get; set; }
+        public List<RecipeIngredient> CurrentRecipeIngredients { get; set; }
+
+        public List<SelectListItem> ListOfIngredients { get; set; }
 
 
 
