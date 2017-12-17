@@ -8,16 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using TandE.Data;
 using TandE.Models;
 using TandE.Models.TEViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace TandE.Controllers
 {
     public class IdeasController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly TrialEclairContext _context;
 
-        public IdeasController(TrialEclairContext context)
+        public IdeasController(TrialEclairContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Ideas
@@ -63,6 +68,9 @@ namespace TandE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdeaID,IdeaName,RefURL1,CategoryID,InitialNotes,CreatedAt")] Idea idea, string[] selectedSubCategories)
         {
+            var user = await _userManager.GetUserAsync(User);
+
+
             if (selectedSubCategories != null)
             {
                 foreach (var subcategory in selectedSubCategories)
@@ -73,6 +81,7 @@ namespace TandE.Controllers
             }
             if(ModelState.IsValid)
             {
+                idea.ApplicationUserId = user.Id;
                 _context.Add(idea);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

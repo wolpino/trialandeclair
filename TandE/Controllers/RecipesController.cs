@@ -8,21 +8,30 @@ using Microsoft.EntityFrameworkCore;
 using TandE.Data;
 using TandE.Models;
 using TandE.Models.TEViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace TandE.Controllers
 {
     public class RecipesController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly TrialEclairContext _context;
 
-        public RecipesController(TrialEclairContext context)
+        public RecipesController(TrialEclairContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "You must login before viewing that page!";
+                return RedirectToAction("Login", "Account");
+            }
             var trialEclairContext = _context.Recipes.Include(r => r.Idea);
             return View(await trialEclairContext.ToListAsync());
         }
@@ -30,6 +39,12 @@ namespace TandE.Controllers
         // GET: Recipes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "You must login before viewing that page!";
+                return RedirectToAction("Login", "Account");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -53,15 +68,14 @@ namespace TandE.Controllers
             return View(recipe);
         }
 
+        ///will be removed
         public IActionResult Create()
         {
             ViewData["IdeaID"] = new SelectList(_context.Ideas, "IdeaID", "IdeaID");
             return View();
         }
 
-        // POST: Recipes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        ///will be removed
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecipeID,RecipeName,RefURL2,RefURL3,RefURL4,VersionNotes,IdeaID,Method")] Recipe recipe)
@@ -82,6 +96,9 @@ namespace TandE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateFromIdea(int? id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            Console.WriteLine(user.Id);
+
             var idea = await _context.Ideas.SingleOrDefaultAsync(m => m.IdeaID == id);
  
             if (ModelState.IsValid)
@@ -93,7 +110,8 @@ namespace TandE.Controllers
                     RefURL2 = "",
                     RefURL3 = "",
                     RefURL4 = "",
-                    VersionNotes = ""
+                    VersionNotes = "",
+                    ApplicationUserId = user.Id
                 };
                 Recipe newR = _context.Add(recipe).Entity;
                 await _context.SaveChangesAsync();

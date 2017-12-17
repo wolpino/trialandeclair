@@ -18,10 +18,10 @@ namespace TandE.Data
 
             var categories = new Category[]
             {
-            new Category{CategoryName="Cookies",CategoryDesc="Crunchy or Chewy, or Cakey, but not bars"},
-            new Category{CategoryName="Candy",CategoryDesc="Bonbons and truffles and anything hard"},
-            new Category{CategoryName="Ice Cream",CategoryDesc="Includes frozen yogurt, or sorbet, anything frozen."},
-            new Category{CategoryName="Cake",CategoryDesc="All the cakes"},
+            new Category{CategoryName="Cookies",CategoryDesc="Crunchy or Chewy, or Cakey, but not bars",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Candy",CategoryDesc="Bonbons and truffles and anything hard",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Ice Cream",CategoryDesc="Includes frozen yogurt, or sorbet, anything frozen.",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Cake",CategoryDesc="All the cakes",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
             };
             foreach (Category c in categories)
             {
@@ -30,10 +30,10 @@ namespace TandE.Data
             context.SaveChanges();
             var ideas = new Idea[]
             {
-            new Idea{IdeaName="QuadChocolate Cookie", CategoryID=categories.Single(i => i.CategoryName == "Cookies").CategoryID,RefURL1="https://www.averiecooks.com/2014/02/quadruple-chocolate-soft-fudgy-pudding-cookies.html",InitialNotes="Maybe add more chooclate",CreatedAt=DateTime.Parse("2011-09-01")},
-            new Idea{IdeaName="Salted Honey Shortbread",CategoryID=categories.Single(i => i.CategoryName == "Cookies").CategoryID,RefURL1="http://evilshenanigans.com/2010/09/salted-honey-lavender-shortbread/",InitialNotes="How to make the honey flavor dominate?",CreatedAt=DateTime.Parse("2011-09-01")},
-            new Idea{IdeaName="Rosemary Candy",CategoryID=categories.Single(i => i.CategoryName == "Candy").CategoryID,RefURL1="http://www.cooks.com/recipe/xw4ki856/rosemary-candy.html",InitialNotes="Make them like the Lavendar candies from France(Brittany?)",CreatedAt=DateTime.Parse("2011-09-01")},
-            new Idea{IdeaName="Cinnamon Toast Crunch Ice Cream",CategoryID=categories.Single(i => i.CategoryName == "Ice Cream").CategoryID,RefURL1="https://food52.com/blog/11367-how-to-make-cereal-milk-ice-cream",InitialNotes="Will it have chuncks?",CreatedAt=DateTime.Parse("2011-09-01")}
+            new Idea{IdeaName="QuadChocolate Cookie", CategoryID=categories.Single(i => i.CategoryName == "Cookies").CategoryID,RefURL1="https://www.averiecooks.com/2014/02/quadruple-chocolate-soft-fudgy-pudding-cookies.html",InitialNotes="Maybe add more chooclate",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Idea{IdeaName="Salted Honey Shortbread",CategoryID=categories.Single(i => i.CategoryName == "Cookies").CategoryID,RefURL1="http://evilshenanigans.com/2010/09/salted-honey-lavender-shortbread/",InitialNotes="How to make the honey flavor dominate?",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Idea{IdeaName="Rosemary Candy",CategoryID=categories.Single(i => i.CategoryName == "Candy").CategoryID,RefURL1="http://www.cooks.com/recipe/xw4ki856/rosemary-candy.html",InitialNotes="Make them like the Lavendar candies from France(Brittany?)",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Idea{IdeaName="Cinnamon Toast Crunch Ice Cream",CategoryID=categories.Single(i => i.CategoryName == "Ice Cream").CategoryID,RefURL1="https://food52.com/blog/11367-how-to-make-cereal-milk-ice-cream",InitialNotes="Will it have chuncks?",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")}
             };
             foreach (Idea s in ideas)
             {
@@ -43,10 +43,10 @@ namespace TandE.Data
 
             var recipes = new Recipe[]
             {
-            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "QuadChocolate Cookie").IdeaID,RecipeName="QuadChocolate Cookie",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?", CreatedAt=DateTime.Parse("2011-09-01") },
-            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "Salted Honey Shortbread").IdeaID,RecipeName="Salted Honey Shortbread",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?", CreatedAt=DateTime.Parse("2011-09-01")},
-            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "Rosemary Candy").IdeaID,RecipeName="QuadChocolate Cookie",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?",CreatedAt=DateTime.Parse("2011-09-01")},
-            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "Cinnamon Toast Crunch Ice Cream").IdeaID,RecipeName="QuadChocolate Cookie",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?",CreatedAt=DateTime.Parse("2011-09-01")},
+            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "QuadChocolate Cookie").IdeaID,RecipeName="QuadChocolate Cookie",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "Salted Honey Shortbread").IdeaID,RecipeName="Salted Honey Shortbread",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "Rosemary Candy").IdeaID,RecipeName="QuadChocolate Cookie",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Recipe{IdeaID=ideas.Single( i => i.IdeaName == "Cinnamon Toast Crunch Ice Cream").IdeaID,RecipeName="QuadChocolate Cookie",RefURL2="https://",RefURL3="https://",RefURL4="https://",Method="1.make dough 2. bake cookies 3. eat",VersionNotes="None?",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
 
 
             };
@@ -58,14 +58,14 @@ namespace TandE.Data
 
             var ingredients = new Ingredient[]
             {
-            new Ingredient{IngredientName="Chocolate"},
-            new Ingredient{IngredientName="Flour"},
-            new Ingredient{IngredientName="Sugar"},
-            new Ingredient{IngredientName="Butter"},
-            new Ingredient{IngredientName="Honey"},
-            new Ingredient{IngredientName="Milk"},
-            new Ingredient{IngredientName="Salt"},
-            new Ingredient{IngredientName="Baking Soda"},
+            new Ingredient{IngredientName="Chocolate", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new Ingredient{IngredientName="Flour", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new Ingredient{IngredientName="Sugar", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Ingredient{IngredientName="Butter", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new Ingredient{IngredientName="Honey", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new Ingredient{IngredientName="Milk", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new Ingredient{IngredientName="Salt", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new Ingredient{IngredientName="Baking Soda", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
 
             };
             foreach (Ingredient s in ingredients)
@@ -76,18 +76,18 @@ namespace TandE.Data
 
             var recipeingred = new RecipeIngredient[]
             {
-            new RecipeIngredient{RecipeID=1,IngredientID=1,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=1,IngredientID=2,Measurement=3,Unit=Unit.cup},
-            new RecipeIngredient{RecipeID=2,IngredientID=3,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=2,IngredientID=4,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=2,IngredientID=5,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=3,IngredientID=2,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=3,IngredientID=3,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=3,IngredientID=4,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=4,IngredientID=2,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=4,IngredientID=4,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=4,IngredientID=5,Measurement=3,Unit=Unit.tablespoon},
-            new RecipeIngredient{RecipeID=4,IngredientID=6,Measurement=3,Unit=Unit.tablespoon},
+            new RecipeIngredient{RecipeID=1,IngredientID=1,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=1,IngredientID=2,Measurement=3,Unit=Unit.cup, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=2,IngredientID=3,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=2,IngredientID=4,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=2,IngredientID=5,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=3,IngredientID=2,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=3,IngredientID=3,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=3,IngredientID=4,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=4,IngredientID=2,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=4,IngredientID=4,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=4,IngredientID=5,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new RecipeIngredient{RecipeID=4,IngredientID=6,Measurement=3,Unit=Unit.tablespoon, CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
 
             };
             foreach (RecipeIngredient e in recipeingred)
@@ -98,10 +98,10 @@ namespace TandE.Data
 
             var subcategories = new SubCategory[]
             {
-            new SubCategory{SubCategoryName="Shortbread",SubCategoryDesc="Null"},
-            new SubCategory{SubCategoryName="Dairy",SubCategoryDesc="Null"},
-            new SubCategory{SubCategoryName="Herb",SubCategoryDesc="Null."},
-            new SubCategory{SubCategoryName="Chocolate",SubCategoryDesc="Null"},
+            new SubCategory{SubCategoryName="Shortbread",SubCategoryDesc="Null", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new SubCategory{SubCategoryName="Dairy",SubCategoryDesc="Null", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new SubCategory{SubCategoryName="Herb",SubCategoryDesc="Null.", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
+            new SubCategory{SubCategoryName="Chocolate",SubCategoryDesc="Null", CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01") },
             };
             foreach (SubCategory c in subcategories)
             {
@@ -114,11 +114,11 @@ namespace TandE.Data
             new IdeaSubCategory{IdeaID=ideas.Single(i => i.IdeaName == "QuadChocolate Cookie").IdeaID,
                 SubCategoryID=subcategories.Single(s => s.SubCategoryName =="Chocolate").SubCategoryID},
             new IdeaSubCategory{IdeaID=ideas.Single(i => i.IdeaName == "Salted Honey Shortbread").IdeaID,
-                SubCategoryID=subcategories.Single(s => s.SubCategoryName =="Shortbread").SubCategoryID},
+                SubCategoryID=subcategories.Single(s => s.SubCategoryName =="Shortbread").SubCategoryID },
             new IdeaSubCategory{IdeaID=ideas.Single(i => i.IdeaName == "Rosemary Candy").IdeaID,
-                SubCategoryID=subcategories.Single(s => s.SubCategoryName =="Herb").SubCategoryID},
+                SubCategoryID=subcategories.Single(s => s.SubCategoryName =="Herb").SubCategoryID },
             new IdeaSubCategory{IdeaID=ideas.Single(i => i.IdeaName == "Cinnamon Toast Crunch Ice Cream").IdeaID,
-                SubCategoryID=subcategories.Single(s => s.SubCategoryName =="Dairy").SubCategoryID},
+                SubCategoryID=subcategories.Single(s => s.SubCategoryName =="Dairy").SubCategoryID },
 
             };
             foreach (IdeaSubCategory s in ideasub)

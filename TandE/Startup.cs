@@ -33,7 +33,7 @@ namespace TandE
                 options.UseSqlServer(Configuration.GetConnectionString("TEConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<TrialEclairContext>()
                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>

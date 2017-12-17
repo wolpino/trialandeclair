@@ -23,10 +23,10 @@ namespace TandE.Models
         public string VersionNotes { get; set; }
         public int IdeaID { get; set; }
         public string Method { get; set; }
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         //Nullable but needs to fill when next is created
         //public DateTime RevisedAt { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser User { get; set; }
 
         public Idea Idea { get; set; }
         public List<RecipeIngredient> Ingredients { get; set; }

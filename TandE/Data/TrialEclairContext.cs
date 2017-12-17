@@ -1,9 +1,10 @@
 ﻿using TandE.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TandE.Data
 {
-    public class TrialEclairContext : DbContext
+    public class TrialEclairContext : IdentityDbContext<ApplicationUser>
     {
         public TrialEclairContext(DbContextOptions<TrialEclairContext> options) : base(options)
         {
@@ -19,6 +20,8 @@ namespace TandE.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Idea>().ToTable("Idea");
             modelBuilder.Entity<Recipe>().ToTable("Recipe");
             modelBuilder.Entity<Ingredient>().ToTable("Ingredient");
@@ -26,6 +29,7 @@ namespace TandE.Data
             modelBuilder.Entity<SubCategory>().ToTable("SubCategory");
             modelBuilder.Entity<RecipeIngredient>().ToTable("RecipeIngredient");
             modelBuilder.Entity<IdeaSubCategory>().ToTable("IdeaSubCategory");
+
 
 
             modelBuilder.Entity<IdeaSubCategory>()
