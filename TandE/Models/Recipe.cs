@@ -23,10 +23,10 @@ namespace TandE.Models
         public string VersionNotes { get; set; }
         public int IdeaID { get; set; }
         public string Method { get; set; }
-        //Nullable but needs to fill when next is created
-        //public DateTime RevisedAt { get; set; }
+  
+        public DateTime? NextVersionCreated { get; set; }
         public string ApplicationUserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public Idea Idea { get; set; }
         public List<RecipeIngredient> Ingredients { get; set; }

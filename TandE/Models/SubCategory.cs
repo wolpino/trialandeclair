@@ -11,7 +11,7 @@ namespace TandE.Models
         public string SubCategoryName { get; set; }
         public string SubCategoryDesc { get; set; }
         public string ApplicationUserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public ICollection<IdeaSubCategory> Ideas { get; set; }
     }

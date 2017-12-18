@@ -1,4 +1,4 @@
-﻿@model TandE.Models.Idea
+﻿@model TandE.Models.TEViewModels.IdeaRecipeDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,41 +11,75 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.IdeaName)
+            @Html.DisplayNameFor(model => model.Idea.IdeaName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IdeaName)
+            @Html.DisplayFor(model => model.Idea.IdeaName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.RefURL1)
+            @Html.DisplayNameFor(model => model.Idea.RefURL1)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.RefURL1)
+            @Html.DisplayFor(model => model.Idea.RefURL1)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.InitialNotes)
+            @Html.DisplayNameFor(model => model.Idea.InitialNotes)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.InitialNotes)
+            @Html.DisplayFor(model => model.Idea.InitialNotes)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(model => model.Idea.CreatedAt)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
+            @Html.DisplayFor(model => model.Idea.CreatedAt)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Category)
+            @Html.DisplayNameFor(model => model.Idea.Category)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
+            @Html.DisplayFor(model => model.Idea.Category.CategoryName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IdeaID">Edit</a> |
-    <form asp-controller="Recipes" asp-action="CreateFromIdea" asp-route-id="@Model.IdeaID">
+    <a asp-action="Edit" asp-route-id="@Model.Idea.IdeaID">Edit</a> |
+    <form asp-controller="Recipes" asp-action="CreateFromIdea" asp-route-id="@Model.Idea.IdeaID">
         <input type="submit" value="Make into Recipe" class="btn btn-default" />
     </form>
 <a asp-action="Index">Back to List</a>
 </div>
+<hr />
+
+
+@foreach (var recipe in Model.RecipeVersions)
+{
+    <p>@recipe.RecipeName</p>
+    <p>@recipe.Method</p>
+    <p>@recipe.CreatedAt</p>
+
+
+    @foreach (var ingred in recipe.Ingredients)
+    {
+
+        <p>@ingred.Measurement @ingred.Unit  @ingred.Ingredient.IngredientName</p>
+
+    }
+    @if (recipe.NextVersionCreated == null)
+    {
+        <a asp-controller="Recipes" asp-action="EditCreatedRecipe" asp-route-id="@recipe.RecipeID">Edit</a>
+
+        <form asp-controller="Recipes" asp-action="NewVersion" asp-route-id="@recipe.RecipeID">
+            <input type="submit" value="New Recipe Version" class="btn btn-default" />
+        </form>
+
+    }
+    @if (recipe.NextVersionCreated != null)
+    {
+        <form asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.RecipeID">
+            <input type="submit" value="View" class="btn btn-default" />
+        </form>
+
+    }
+    <hr />
+}

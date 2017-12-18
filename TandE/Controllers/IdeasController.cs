@@ -24,11 +24,19 @@ namespace TandE.Controllers
             _userManager = userManager;
 
         }
+        public async Task<IActionResult> Dashboard()
+        {
+            var user = await _userManager.GetUserAsync(User);
 
+            var trialEclairContext = _context.Ideas.Include(i => i.Category).Where(item => user.Id == item.ApplicationUserId);
+            return View(await trialEclairContext.ToListAsync());
+        }
         // GET: Ideas
         public async Task<IActionResult> Index()
         {
-            var trialEclairContext = _context.Ideas.Include(i => i.Category);
+            var user = await _userManager.GetUserAsync(User);
+
+            var trialEclairContext = _context.Ideas.Include(i => i.Category).Where(item => user.Id == item.ApplicationUserId);
             return View(await trialEclairContext.ToListAsync());
         }
 
@@ -47,8 +55,26 @@ namespace TandE.Controllers
             {
                 return NotFound();
             }
+            IdeaRecipeDetailsViewModel ideaRecipe = new IdeaRecipeDetailsViewModel()
+            {
+                //order by revision at
+                RecipeVersions = _context.Recipes
+                                 .Where(r => r.IdeaID == id)
+                                 .ToList()
 
-            return View(idea);
+                
+            };
+
+            ideaRecipe.Idea = idea;
+            foreach(var recipe in ideaRecipe.RecipeVersions)
+            {
+                recipe.Ingredients = _context
+                     .RecipeIngredients
+                     .Include(r => r.Ingredient)
+                     .Where(item => recipe.RecipeID == item.RecipeID)
+                     .ToList();
+            }
+            return View(ideaRecipe);
         }
 
         // GET: Ideas/Create

@@ -32,7 +32,7 @@ namespace TandE.Controllers
                 TempData["ErrorMessage"] = "You must login before viewing that page!";
                 return RedirectToAction("Login", "Account");
             }
-            var trialEclairContext = _context.Recipes.Include(r => r.Idea);
+            var trialEclairContext = _context.Recipes.Include(r => r.Idea).Where(item => user.Id == item.ApplicationUserId);
             return View(await trialEclairContext.ToListAsync());
         }
 
@@ -96,9 +96,6 @@ namespace TandE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateFromIdea(int? id)
         {
-            var user = await _userManager.GetUserAsync(User);
-            Console.WriteLine(user.Id);
-
             var idea = await _context.Ideas.SingleOrDefaultAsync(m => m.IdeaID == id);
  
             if (ModelState.IsValid)
@@ -111,9 +108,51 @@ namespace TandE.Controllers
                     RefURL3 = "",
                     RefURL4 = "",
                     VersionNotes = "",
-                    ApplicationUserId = user.Id
+                    ApplicationUserId = idea.ApplicationUserId
                 };
                 Recipe newR = _context.Add(recipe).Entity;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = newR.RecipeID });
+            }
+            return RedirectToAction("Index", "Ideas");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewVersion(int? id)
+        {
+            var previousversion = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeID == id);
+            previousversion.Ingredients = _context
+                                            .RecipeIngredients
+                                            .Where(item => previousversion.RecipeID == item.RecipeID)
+                                            .ToList();
+            previousversion.NextVersionCreated = DateTime.UtcNow;
+            if (ModelState.IsValid)
+            {
+                Recipe recipe = new Recipe
+                {
+                    RecipeName = previousversion.RecipeName,
+                    IdeaID = previousversion.IdeaID,
+                    RefURL2 = previousversion.RefURL2,
+                    RefURL3 = previousversion.RefURL3,
+                    RefURL4 = previousversion.RefURL4,
+                    VersionNotes = "",
+                    ApplicationUserId = previousversion.ApplicationUserId,
+                };
+                Recipe newR = _context.Add(recipe).Entity;
+                foreach(var ingred in previousversion.Ingredients)
+                {
+                    RecipeIngredient recipeIngredient = new RecipeIngredient
+                    {
+                        RecipeID = recipe.RecipeID,
+                        IngredientID = ingred.IngredientID,
+                        Measurement = ingred.Measurement,
+                        Unit = ingred.Unit
+                    };
+                    _context.Add(recipeIngredient);
+                    _context.SaveChanges();
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = newR.RecipeID });
             }
@@ -141,6 +180,7 @@ namespace TandE.Controllers
                                             .RecipeIngredients
                                             .Where(item => recipe.RecipeID == item.RecipeID)
                                             .ToList()
+                
             };
 
             newrecipe.ListOfIngredients = PopulateIngredients();
