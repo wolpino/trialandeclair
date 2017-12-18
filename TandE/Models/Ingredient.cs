@@ -10,6 +10,8 @@ namespace TandE.Models
     {
         public int IngredientID { get; set; }
         public string IngredientName { get; set; }
+        public string ApplicationUserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public ICollection<RecipeIngredient> Recipes { get; set; }
     }

@@ -15,9 +15,9 @@ namespace TandE.Models
         public string RefURL1 { get; set; }
         public int CategoryID { get; set; }
         public string InitialNotes { get; set; }
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public string ApplicationUserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public Category Category { get; set; }
         public ICollection<Recipe> Recipes { get; set; }
         private ICollection<IdeaSubCategory> _subCategories;

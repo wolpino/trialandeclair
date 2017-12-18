@@ -1,0 +1,20 @@
+﻿@model IEnumerable<TandE.Models.Idea>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<p>
+    <a asp-action="Create">Add Idea</a>
+</p>
+
+<h3>Ideas</h3>
+@foreach (var item in Model) {
+
+<p><a asp-action="Details" asp-route-id="@item.IdeaID">@item.IdeaName</a> @item.Category.CategoryName</p>
+
+  
+}
+  

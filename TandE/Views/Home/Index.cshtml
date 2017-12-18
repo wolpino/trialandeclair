@@ -1,4 +1,8 @@
-﻿@model LoginViewModel
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
@@ -10,7 +14,7 @@
 <div class="row">
     <div class="col-md-4">
         <section>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <form asp-action="Login" asp-controller="Account" method="post">
                 <h4>Use a local account to log in.</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -40,7 +44,7 @@
                         <a asp-action="ForgotPassword">Forgot your password?</a>
                     </p>
                     <p>
-                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                        <a asp-action="Register" asp-controller="Account">Register as a new user?</a>
                     </p>
                 </div>
             </form>
