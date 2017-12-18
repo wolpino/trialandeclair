@@ -12,7 +12,6 @@
     <Content Include="Controllers\ManageController.cs" />
     <Content Include="Controllers\RecipeIngredientsController.cs" />
     <Content Include="Controllers\RecipesController.cs" />
-    <Content Include="Controllers\TEController.cs" />
   </ItemGroup>
 
 

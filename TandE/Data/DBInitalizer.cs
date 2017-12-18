@@ -20,8 +20,13 @@ namespace TandE.Data
             {
             new Category{CategoryName="Cookies",CategoryDesc="Crunchy or Chewy, or Cakey, but not bars",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
             new Category{CategoryName="Candy",CategoryDesc="Bonbons and truffles and anything hard",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
-            new Category{CategoryName="Ice Cream",CategoryDesc="Includes frozen yogurt, or sorbet, anything frozen.",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Frozen Treats",CategoryDesc="Includes frozen yogurt, or sorbet, anything frozen.",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
             new Category{CategoryName="Cake",CategoryDesc="All the cakes",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Bars",CategoryDesc="Brownies, Blondies, Lemon, Granola, etc",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Breads",CategoryDesc="Rolls, Loaves, sticks, quick too.",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Pie",CategoryDesc="Ice cream, frozen yogurt, or sorbet, anything frozen.",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+            new Category{CategoryName="Crackers",CategoryDesc="Crispy, or possibly chewy, but not bread.",CreatedAt=DateTime.Parse("2011-09-01"),UpdatedAt=DateTime.Parse("2011-09-01")},
+
             };
             foreach (Category c in categories)
             {
