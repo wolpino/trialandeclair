@@ -4,49 +4,43 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Trial & Eclair</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 
+    <script src="~/tinymce2/js/tinymce/tinymce.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(console.log("jQuery what up!"));
+        });
+    </script>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Trial & Eclair</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="TE" asp-action="Index" class="navbar-brand">test</a></li>
 
-                    <li><a asp-area="" asp-controller="Ideas" asp-action="Index" class="navbar-brand">Ideas</a></li>
-                    <li><a asp-area="" asp-controller="Recipes" asp-action="Index" class="navbar-brand">Recipes</a></li>
-                    <li><a asp-area="" asp-controller="RecipeIngredients" asp-action="Index" class="navbar-brand">RecipeIngred</a></li>
-                    <li><a href="http://trialandeclair.com">Blog</a></li>
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
-        </div>
-    </nav>
+
+
     <div class="container body-content">
-        @RenderBody()
+        <header>
+            @await Html.PartialAsync("_LoginPartial")
+
+            <img class="tande" src="http://trialandeclair.com/wp-content/uploads/2016/12/TaE2.jpg" alt="Trial & Eclair" width=550/>
+
+        </header>
         <hr />
-        <footer>
-            <p>&copy; 2017 - Trial & Eclair</p>
-        </footer>
+
+        @RenderBody()
+
     </div>
 
     <environment include="Development">

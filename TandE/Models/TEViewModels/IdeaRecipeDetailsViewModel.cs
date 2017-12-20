@@ -10,6 +10,7 @@ namespace TandE.Models.TEViewModels
         public IdeaRecipeDetailsViewModel()
         {
             RecipeVersions = new List<Recipe>();
+            ListofSubs = new List<IdeaSubCategory>();
         }
         public Recipe Recipe { get; set; }
 
@@ -20,6 +21,8 @@ namespace TandE.Models.TEViewModels
         public List<RecipeIngredient> CurrentRecipeIngredients { get; set; }
 
         public List<Recipe> RecipeVersions { get; set; }
+
+        public List<IdeaSubCategory> ListofSubs { get; set; }
 
 
 

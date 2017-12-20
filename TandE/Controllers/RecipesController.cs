@@ -159,7 +159,7 @@ namespace TandE.Controllers
             return RedirectToAction("Index", "Ideas");
         }
 
-
+       
         public async Task<IActionResult> EditCreatedRecipe(int? id)
         {
             if (id == null)
@@ -224,7 +224,7 @@ namespace TandE.Controllers
             return View(newrecipe);
         }
 
-        private List<SelectListItem> PopulateIngredients()
+        public List<SelectListItem> PopulateIngredients()
         {
             List<SelectListItem> items = new List<SelectListItem>();
             var ingredients = _context.Ingredients.ToList();
@@ -232,7 +232,7 @@ namespace TandE.Controllers
             {
                 items.Add(new SelectListItem
                 {
-                    Text = (ingredient.IngredientName).ToString(),
+                    Text = ingredient.IngredientName.ToString(),
                     Value = ingredient.IngredientID.ToString(),
                     
                 });

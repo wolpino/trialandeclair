@@ -23,6 +23,8 @@ namespace TandE.Models.TEViewModels
 
         public List<SelectListItem> ListOfIngredients { get; set; }
 
+        public Ingredient Ingredient { get; set; }
+
 
 
 

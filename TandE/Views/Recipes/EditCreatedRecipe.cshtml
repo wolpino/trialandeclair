@@ -3,92 +3,150 @@
 @{
     ViewData["Title"] = "EditCreatedRecipe";
 }
+<script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea',
+        height: 300,
+        width: 500,
+        menubar: false,
+        plugins: "lists",
+        toolbar: "undo redo | numlist bullist | bold italic",
+        browser_spellcheck: true,
+    });
+</script>
 
 <h2>Edit Created Recipe</h2>
 
 <h4>Recipe</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-7">
         <form asp-action="EditCreatedRecipe">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Recipe.RecipeID" />
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="Recipe.RecipeName" class="control-label"></label>
                 <input asp-for="Recipe.RecipeName" class="form-control" />
                 <span asp-validation-for="Recipe.RecipeName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="Recipe.RefURL2" class="control-label"></label>
                 <input asp-for="Recipe.RefURL2" class="form-control" />
                 <span asp-validation-for="Recipe.RefURL2" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="Recipe.RefURL3" class="control-label"></label>
                 <input asp-for="Recipe.RefURL3" class="form-control" />
                 <span asp-validation-for="Recipe.RefURL3" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="Recipe.RefURL4" class="control-label"></label>
                 <input asp-for="Recipe.RefURL4" class="form-control" />
                 <span asp-validation-for="Recipe.RefURL4" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="Recipe.VersionNotes" class="control-label"></label>
                 <input asp-for="Recipe.VersionNotes" class="form-control" />
                 <span asp-validation-for="Recipe.VersionNotes" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Recipe.IdeaID" />
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="Recipe.Method" class="control-label"></label>
-                <input asp-for="Recipe.Method" class="form-control" />
+                <textarea asp-for="Recipe.Method" class="form-control" id="mytextarea">Hello, World!</textarea>
                 <span asp-validation-for="Recipe.Method" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-xs-7">
                 <input type="submit" value="Update" class="btn btn-default" />
             </div>
         </form>
+
+        <a class="col-xs-7" asp-controller="Ideas" asp-action="Dashboard">Dashboard</a>
+
     </div>
-</div>
-<h5>Ingredients:</h5>
-@foreach (var ingred in Model.CurrentRecipeIngredients)
-{
-    <p>@ingred.Measurement @ingred.Unit -  @ingred.Ingredient.IngredientName (Remove, Edit)</p>
-}
 
-<hr />
-<h5>Add Ingredient</h5>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddIng" asp-controller="RecipeIngredients">
+    <div class="col-md-5">
+
+        <h5>Ingredients:</h5>
+        <div id="currentIngred">
+            @foreach (var ingred in Model.CurrentRecipeIngredients)
+            {
+                <p>
+                    @ingred.Measurement @ingred.Unit -  @ingred.Ingredient.IngredientName
+                    <a asp-controller="RecipeIngredients" asp-action="Edit" asp-route-id="@ingred.RecipeIngredientID">Edit</a> |
+                    <a asp-controller="RecipeIngredients" asp-action="Delete" asp-route-id="@ingred.RecipeIngredientID">Delete</a>
+                </p>
+            }
+        </div>
+        <hr />
+
+        <h5>Add Ingredient</h5>
+
+        <form id="addIng" asp-action="AddIng" asp-controller="RecipeIngredients">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="RecipeIngredient.RecipeID" type="hidden" value=@Model.Recipe.RecipeID />
 
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="RecipeIngredient.IngredientID" class="control-label"></label>
                 <select asp-for="RecipeIngredient.IngredientID" class="form-control" asp-items="Model.ListOfIngredients"></select>
             </div>
-            <div class="form-group">
+            <div class="col-xs-7">
                 <label asp-for="RecipeIngredient.Measurement" class="control-label"></label>
                 <input asp-for="RecipeIngredient.Measurement" class="form-control" />
                 <span asp-validation-for="RecipeIngredient.Measurement" class="text-danger"></span>
             </div>
-            @Html.DropDownListFor(m => m.RecipeIngredient.Unit, new SelectList(Enum.GetValues(typeof(Unit))), "Choose Unit")
-            <div class="form-group">
+            <div class="col-xs-7">
+                @Html.DropDownListFor(m => m.RecipeIngredient.Unit, new SelectList(Enum.GetValues(typeof(Unit))), "Choose Unit")
+            </div>
+            <div class="col-xs-7">
                 <input type="submit" value="Add" class="btn btn-default" />
             </div>
         </form>
+
+
+    <script>
+
+        $('#addIng').submit(function (e) {
+            e.preventDefault()
+            $.ajax({
+                url: "/../RecipeIngredients/AddIng",
+                method: "POST",
+                data: {
+                    IngredientID: $("#RecipeIngredient_IngredientID").val(),
+                    RecipeID: $("#RecipeIngredient_RecipeID").val(),
+                    Measurement: $("#RecipeIngredient_Measurement").val(),
+                    Unit: $("#RecipeIngredient_Unit").val(),
+                },
+                success: function (data) {
+                    alert(this.data[);
+                    $('#currentIngred').append("<p>ingred.Measurement ingred.Unit -  ingred.Ingredient.IngredientName</p>");
+                }
+            });
+            console.log("Form submitted by not HTTP request sent to server!")
+
+        });
+    </script>
+
+
+    <form asp-controller="Ingredients" asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-xs-7">
+            <label asp-for="Ingredient.IngredientName" class="control-label"></label>
+            <input asp-for="Ingredient.IngredientName" class="form-control" />
+            <span asp-validation-for="Ingredient.IngredientName" class="text-danger"></span>
+        </div>
+        <input asp-for="Ingredient.ApplicationUserId" type="hidden" value=@Model.Recipe.ApplicationUserId />
+
+        <div class="col-xs-7">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+
     </div>
 </div>
 
 
-
-
-<div>
-    <a asp-controller="Ideas" asp-action="Dashboard" >Dashboard</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

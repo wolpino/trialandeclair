@@ -1,20 +1,30 @@
-﻿@model IEnumerable<TandE.Models.Idea>
+﻿@model TandE.Models.TEViewModels.IdeaViewModel
 
 @{
     ViewData["Title"] = "Dashboard";
 }
 
-<h2>Dashboard</h2>
+<h2>Recipe Ideas</h2>
 
 <p>
-    <a asp-action="Create">Add Idea</a>
+    <a class="btn btn-info" asp-action="Create">Add Idea</a>
 </p>
 
-<h3>Ideas</h3>
-@foreach (var item in Model) {
+<div class="idealist">
+    @foreach (var category in Model.ListofCategories)
+    {
+        
+        <h3>@category.CategoryName</h3>
 
-<p><a asp-action="Details" asp-route-id="@item.IdeaID">@item.IdeaName</a> @item.Category.CategoryName</p>
+            @foreach (var item in Model.ListofIdeas)
+            {
+                @if (item.Category.CategoryName == category.CategoryName)
+                {
+                    <p><a asp-action="Details" asp-route-id="@item.IdeaID">@item.IdeaName</a></p>
 
-  
-}
-  
+
+                }
+            }
+    }
+
+</div>
