@@ -1,0 +1,42 @@
+﻿@model TandE.Models.Ingredient
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Ingredient</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IngredientName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IngredientName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IngredientID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

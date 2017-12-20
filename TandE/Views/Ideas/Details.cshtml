@@ -4,58 +4,41 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.Idea.IdeaName</h2>
 
-<div>
-    <h4>Idea</h4>
+<div class="row">
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Idea.IdeaName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Idea.IdeaName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Idea.RefURL1)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Idea.RefURL1)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Idea.InitialNotes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Idea.InitialNotes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Idea.CreatedAt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Idea.CreatedAt)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Idea.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Idea.Category.CategoryName)
-        </dd>
-    </dl>
+    <div class="col-md-4">
+        <p>Notes: @Model.Idea.InitialNotes</p>
+        <p><a href="@Model.Idea.RefURL1">@Model.Idea.RefURL1</a></p>
+
+        <p>Created:  @Html.DisplayFor(model => model.Idea.CreatedAt)</p>
+        
+    </div>
+    <div class"col-md-4">
+        <p>Category: @Model.Idea.Category.CategoryName</p>
+        <p>Subcategories: </p>
+        @foreach (var sub in @Model.ListofSubs)
+        {
+           <p>@sub.SubCategory.SubCategoryName</p>
+        }
+        
+    </div>
+
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Idea.IdeaID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Idea.IdeaID">Edit</a> 
     <form asp-controller="Recipes" asp-action="CreateFromIdea" asp-route-id="@Model.Idea.IdeaID">
         <input type="submit" value="Make into Recipe" class="btn btn-default" />
     </form>
-<a asp-action="Index">Back to List</a>
+<a asp-action="Dashboard">Back to List</a>
 </div>
 <hr />
-
 
 @foreach (var recipe in Model.RecipeVersions)
 {
     <p>@recipe.RecipeName</p>
-    <p>@recipe.Method</p>
+    @Html.Raw(@recipe.Method)
     <p>@recipe.CreatedAt</p>
 
 

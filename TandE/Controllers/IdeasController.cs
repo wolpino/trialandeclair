@@ -28,9 +28,17 @@ namespace TandE.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var trialEclairContext = _context.Ideas.Include(i => i.Category).Where(item => user.Id == item.ApplicationUserId);
-            return View(await trialEclairContext.ToListAsync());
+            IdeaViewModel ideas = new IdeaViewModel()
+            {
+                ListofCategories = _context
+                                   .Categories
+                                   .OrderBy(c =>c.CategoryName)
+                                   .ToList()
+            };
+            ideas.ListofIdeas = _context.Ideas.Include(i => i.Category).Where(item => user.Id == item.ApplicationUserId).OrderBy(i => i.IdeaName).ToList();
+            return View(ideas);
         }
+
         // GET: Ideas
         public async Task<IActionResult> Index()
         {
@@ -60,9 +68,9 @@ namespace TandE.Controllers
                 //order by revision at
                 RecipeVersions = _context.Recipes
                                  .Where(r => r.IdeaID == id)
-                                 .ToList()
+                                 .ToList(),
 
-                
+                ListofSubs = _context.IdeaSubCategories.Include(r =>r.SubCategory).Where(s => s.IdeaID == id).ToList()
             };
 
             ideaRecipe.Idea = idea;
@@ -110,7 +118,7 @@ namespace TandE.Controllers
                 idea.ApplicationUserId = user.Id;
                 _context.Add(idea);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Dashboard));
             }
             PopulateSubCategoryData(idea);
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", idea.CategoryID);
@@ -190,7 +198,7 @@ namespace TandE.Controllers
                     "Try again, and if the problem persists, " +
                     "see your system administrator.");
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Dashboard));
         }
             UpdateIdeaSubCategories(selectedSubCategories, ideaToUpdate);
             PopulateSubCategoryData(ideaToUpdate);

@@ -22,6 +22,8 @@ namespace TandE.Models
         public string RefURL4 { get; set; }
         public string VersionNotes { get; set; }
         public int IdeaID { get; set; }
+
+        [UIHint("tinymce_full")]
         public string Method { get; set; }
   
         public DateTime? NextVersionCreated { get; set; }

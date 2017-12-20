@@ -10,7 +10,7 @@ namespace TandE.Models
     public class BaseEntity
     {
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:Y}", ApplyFormatInEditMode = true)]
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [DataType(DataType.Date)]

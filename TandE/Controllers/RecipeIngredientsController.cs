@@ -53,17 +53,21 @@ namespace TandE.Controllers
             ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName");
             return View();
         }
-
-        // POST: RecipeIngredients/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddIng([Bind("RecipeIngredientID,RecipeID,IngredientID,Measurement,Unit")] RecipeIngredient recipeIngredient)
+       
+        public async Task<IActionResult> AddIng(RecipeIngredient recipeIngredient)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(recipeIngredient);
+                RecipeIngredient recIng = new RecipeIngredient()
+                {
+                    RecipeID = recipeIngredient.RecipeID,
+                    IngredientID = recipeIngredient.IngredientID,
+                    Measurement = recipeIngredient.Measurement,
+                    Unit = recipeIngredient.Unit
+                };
+                
+                _context.Add(recIng);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = recipeIngredient.RecipeID });
             }
@@ -71,6 +75,23 @@ namespace TandE.Controllers
             ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);
             return View(recipeIngredient);
         }
+        // POST: RecipeIngredients/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddIng([Bind("RecipeIngredientID,RecipeID,IngredientID,Measurement,Unit")] RecipeIngredient recipeIngredient)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(recipeIngredient);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = recipeIngredient.RecipeID });
+        //    }
+        //    ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientID", recipeIngredient.IngredientID);
+        //    ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);
+        //    return View(recipeIngredient);
+        //}
 
         // GET: RecipeIngredients/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -85,8 +106,9 @@ namespace TandE.Controllers
             {
                 return NotFound();
             }
-            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientID", recipeIngredient.IngredientID);
+            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientName", recipeIngredient.IngredientID);
             ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);
+
             return View(recipeIngredient);
         }
 
@@ -120,9 +142,9 @@ namespace TandE.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = recipeIngredient.RecipeID });
             }
-            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientID", recipeIngredient.IngredientID);
+            ViewData["IngredientID"] = new SelectList(_context.Ingredients, "IngredientID", "IngredientName", recipeIngredient.IngredientID);
             ViewData["RecipeID"] = new SelectList(_context.Recipes, "RecipeID", "RecipeName", recipeIngredient.RecipeID);
             return View(recipeIngredient);
         }
@@ -153,9 +175,10 @@ namespace TandE.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var recipeIngredient = await _context.RecipeIngredients.SingleOrDefaultAsync(m => m.RecipeIngredientID == id);
+            int returnID = recipeIngredient.RecipeID;
             _context.RecipeIngredients.Remove(recipeIngredient);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = returnID });
         }
 
         private bool RecipeIngredientExists(int id)

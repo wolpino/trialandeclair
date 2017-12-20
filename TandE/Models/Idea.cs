@@ -11,9 +11,13 @@ namespace TandE.Models
     public class Idea : BaseEntity
     {
         public int IdeaID { get; set; }
+        [Display(Name ="Idea")]
         public string IdeaName { get; set; }
+        [Display(Name = "Reference URL")]
         public string RefURL1 { get; set; }
+        [Display(Name = "Category")]
         public int CategoryID { get; set; }
+        [Display(Name = "Notes")]
         public string InitialNotes { get; set; }
 
         public string ApplicationUserId { get; set; }
