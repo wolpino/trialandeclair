@@ -89,10 +89,10 @@
 
             <div class="col-xs-7">
                 <label asp-for="RecipeIngredient.IngredientID" class="control-label"></label>
-                <select asp-for="RecipeIngredient.IngredientID" class="form-control" asp-items="Model.ListOfIngredients"></select>
+                <select asp-for="RecipeIngredient.IngredientID" name="ingred" class="form-control" asp-items="Model.ListOfIngredients"></select>
             </div>
             <div class="col-xs-7">
-                <label asp-for="RecipeIngredient.Measurement" class="control-label"></label>
+                <label asp-for="RecipeIngredient.Measurement" name="measure" class="control-label"></label>
                 <input asp-for="RecipeIngredient.Measurement" class="form-control" />
                 <span asp-validation-for="RecipeIngredient.Measurement" class="text-danger"></span>
             </div>
@@ -105,7 +105,7 @@
         </form>
 
 
-    <script>
+        <script type="text/javascript">
 
         $('#addIng').submit(function (e) {
             e.preventDefault()
@@ -119,14 +119,34 @@
                     Unit: $("#RecipeIngredient_Unit").val(),
                 },
                 success: function (data) {
-                    alert(this.data[);
-                    $('#currentIngred').append("<p>ingred.Measurement ingred.Unit -  ingred.Ingredient.IngredientName</p>");
-                }
-            });
-            console.log("Form submitted by not HTTP request sent to server!")
+                },
+            })
+
+
 
         });
-    </script>
+
+        $(document).keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                $.ajax({
+                    url: "/../api/APIRecipeIngredients/",
+                    type: 'GET',
+                    success: function (data, textStatus, xhr) {
+                        console.log(data);
+                        $('#currentIngred').append(data)
+
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Operation');
+                    }
+
+                })
+            }
+        });
+        </script>
+
 
 
     <form asp-controller="Ingredients" asp-action="Create">

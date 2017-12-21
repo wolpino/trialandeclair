@@ -67,7 +67,9 @@ namespace TandE.Controllers
                     Unit = recipeIngredient.Unit
                 };
                 
+
                 _context.Add(recIng);
+                
                 await _context.SaveChangesAsync();
                 return RedirectToAction("EditCreatedRecipe", "Recipes", new { id = recipeIngredient.RecipeID });
             }
