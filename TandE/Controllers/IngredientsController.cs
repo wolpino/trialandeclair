@@ -65,7 +65,7 @@ namespace TandE.Controllers
 
             if (ModelState.IsValid)
             {
-                ingredient.ApplicationUserId = user.ID;
+                ingredient.ApplicationUserId = user.Id;
                 _context.Add(ingredient);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
